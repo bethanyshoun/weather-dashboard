@@ -4,10 +4,104 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <title>Weather Dashboard</title>
 </head>
-<body>
-    
-</body>
-</html>
+<body class="flex-column min-50-vh">
+    <header class="p-4 p-sm-5 mb-4 text-align-center">
+        <h1 class="text-center app-title">Weather Dashboard</h1>
+    </header>
 
+    <main class="m-5 text-align-center">
+        <div class="row m-0 d-block d-md-flex"> <!--??Check-->
+            <section class="col-12 col-md-3">
+                <form id="search-form">
+                    <h3>Search for a City:</h3>
+                    <input type="text" id="city-search" autofocus="true" class="w-100 mb-2" placeholder="Enter City Name"/>
+                    <button type="submit" class="w-100 mb-3 btn btn-secondary" id="search-button">Search</button>
+                </form>
+                <div id="search-container">
+                    <h4>Recent Searches</h4>
+                </div>
+                <!-- Need a clear seach history button?-->
+            </section>
+
+            <section class="col-12 col-md-9">
+                <div class="p-3 mb-2" id="current-weather">
+                    <h2 class="current-heading">Current Weather</h2>
+                    <div class="row">
+                        <div class="weather-container col-4" id="weather-data">
+                            <div id="current-city">Current City: </div>
+                            <div id="date">The Date: </div>
+                            <div id="icon">Weather Icon: </div>
+                            <div id="temperature">Temperature: </div>
+                            <div id="humidity">Humidity: </div>
+                            <div id="wind-speed">Wind Speed: </div>
+                            <div id="uv-index">UV Index w/color code: </div> 
+                        </div>
+                    </div>
+                </div>
+                <div id="five-day" class="p-3">
+                    <h3 class="d-block">Five-Day Forecast</h3>
+                    <div class="row justify-content-around d-block d-xl-flex mr-0">
+                        <div id="day1" class="text-center d-none col m-2 p-0">
+                            <div class="daily-info">
+                                <div class="day-heading" id="day1-heading">Date</div>
+                                <img src="" class="card-icon" id="day1-icon">Image</img>
+                                <div id="day1-temperature">Temperature</div>
+                                <div id="day1-wind-speed">Wind Speed</div>
+                                <div id="day1-humidity">Humidity</div>
+                            </div>
+                        </div>
+                        <div id="day2" class="text-center d-none col m-2 p-0">
+                            <div class="daily-info">
+                                <div class="day-heading" id="day2-heading">Date</div>
+                                <img src="" class="card-icon" id="day2-icon">Image</img>
+                                <div id="day2-temperature">Temperature</div>
+                                <div id="day2-wind-speed">Wind Speed</div>
+                                <div id="day2-humidity">Humidity</div>
+                            </div>
+                            <div id="day3" class="text-center d-none col m-2 p-0">
+                                <div class="daily-info">
+                                    <div class="day-heading" id="day3-heading">Date</div>
+                                    <img src="" class="card-icon" id="day3-icon">Image</img>
+                                    <div id="day3-temperature">Temperature</div>
+                                    <div id="day3-wind-speed">Wind Speed</div>
+                                    <div id="day3-humidity">Humidity</div>
+                                </div>
+                            </div>
+                            <div id="day4" class="text-center d-none col m-2 p-0">
+                                <div class="daily-info">
+                                    <div class="day-heading" id="day4-heading">Date</div>
+                                    <img src="" class="card-icon" id="day4-icon">Image</img>
+                                    <div id="day4-temperature">Temperature</div>
+                                    <div id="day4-wind-speed">Wind Speed</div>
+                                    <div id="day4-humidity">Humidity</div>
+                                </div>
+                            </div>
+                            <div id="day5" class="text-center d-none col m-2 p-0">
+                                <div class="daily-info">
+                                    <div class="day-heading" id="day5-heading">Date</div>
+                                    <img src="" class="card-icon" id="day5-icon">Image</img>
+                                    <div id="day5-temperature">Temperature</div>
+                                    <div id="day5-wind-speed">Wind Speed</div>
+                                    <div id="day5-humidity">Humidity</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </div>
+    </main>
+        
+     <script src="./assets/js/script.js"></script>
+
+</body>
+
+</html>
