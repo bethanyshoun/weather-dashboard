@@ -11,7 +11,9 @@
 // THEN I am again presented with current and future conditions for that city
 
 //Global Variables
+var apiKey = '&appid=fdd66cdc633a5422043e08fcf47a0c04';
   //search form
+var searchBtn = document.querySelector('#search-button');
 var searchFormEl = document.querySelector("#search-form");
 var searchContainerEl = document.querySelector("#search-container");
 var searchInputEl = document.querySelector("#city-search");
@@ -22,71 +24,47 @@ var currentIconEl = document.querySelector("#current-icon");
 var temperature = document.querySelector("#temperature");
 var humidity = document.querySelector("#humidity");
 var wind = document.querySelector("wind-speed");
-var uv = document.querySelector("uv-index");
+var uvindex = document.querySelector("uv-index");
 
 //Set up local storage
 var search = JSON.parse(localStorage.getItem("search") || "[]");
+var cityName = localStorage.getItem('cityNameStorage')
 
-// Search for a city
-var formSubmitHandler = function(event) {
-  // prevent page from refreshing
-  event.preventDefault();
-  // get value from input element
-  var cityName = searchInputEl.value.trim();
-    searchInputEl.value = "";
 
-  if (cityName) {
-    getCoordinates(cityName);
-    // clear old content
-    cityContainerEl.textContent = "";
-    cityInputEl.value = "";
-  } else {
-    alert("Please enter a city");
-  }
-};
+//5-Day forecast
+var apiForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + '&units=imperial' + apiKey;
 
-var getCoordinates = function(cityName) {
-  var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&limit=1&units=imperial&appid=fdd66cdc633a5422043e08fcf47a0c04";
+//Input in local storage
+function storeCityName() {
+  localStorage.setItem('cityNameStorage', inputEl.value);
+}
+//append search input to recent searches container
+for (var i = 0; i < localStorage.length; i++) {
+  $('#search-container').append + ("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
+}
 
-  // make a get request to url
+//Current Day Forecast
+var displayWeather = function(data) {
+  //Fetch the Current day weather
+  var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + '&units=imperial' + apiKey;
+  //Icon Link
+  //var iconLink = "https://openweathermap.org/img/w/" + data.current.weather[0].icon + ".png";
   fetch(apiUrl)
     .then(function(response) {
-      // request was successful
-      if (response.ok) {
-        response.json()
-          .then(function(data) {
-
-          $("#city-name")[0].textContent = cityName + " (" + moment().format('MM/DD/YYYY') + ")";
-          console.log(data);
-          displayWeather(/* */);
-        });
-      } else {
-        alert('Error: City Not Found');
-      }
+      return response.json();
     })
-    .catch(function(error) {
-      alert("Unable to connect to Weather Dashboard");
-    });
-};
+    .then(function(data) {
+      currentHeadingEl.innerHTML = data[0].name + " (" + moment().format("M/D/YYYY") + ") ";
+     // currentIconEl.innerHTML = "<img src=" + iconLink + ">";
+      saveSearch(data[0].name);
+    })
+    //temperature.textContent = "Temperature: " + data.current.temperature + " \u00B0F"
 
-var displayWeather = function(/** */) {
-  // check if api returned weather
-  if (city.length === 0) {
-    cityContainerEl.textContent = "No weather found for this city, check your spelling and try again.";
-    return;
-  }
+}
+   
+    //displayWeather();
 
-  citySearchTerm.textContent = searchTerm;
 
-  // loop over repos
-  for (var i = 0; i < city.length; i++) {
-
-    cityEl.appendChild(titleEl);
-
-    // append container to the dom
-    cityContainerEl.appendChild(cityEl);
-  }
-};
 
 // add event listeners to form and button container
-searchFormEl.addEventListener("submit", formSubmitHandler);
+searchBtn.addEventListener("click", displayWeather);
