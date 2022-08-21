@@ -40,6 +40,19 @@ function fetchWeather(cityName) {
   }) 
 }
 
+// Fetch 5-day forecast
+function fetchForecast(cityName) {
+  if (document.getElementById("five").contains(document.querySelector(".forecast"))) 
+  { };
+  //console.log(cityName, "input");
+  console.log(cityName);
+  fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + apiKey + '&units=imperial').then(function (response) {
+    return response.json();
+  }) .then(function (data){
+    displayForecast(data);
+  }) 
+}
+
 // Function to display current weather data
 function displayWeather(data) {
   // Current City Name
@@ -102,34 +115,31 @@ function displayWeather(data) {
 }
 
 
-// Display 5-day forecast
-function fetchForecast(cityName) {
-  if (document.getElementById("five").contains(document.querySelector(".forecast"))) 
-  { };
-  console.log(cityName, "input");
-  fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + apiKey + '&units=imperial').then(function (response) {
-    return response.json();
-  }) .then(function (data){
-    console.log(data);
-    displayForecast(data);
-  }) 
-}
-
 //display forecast data
-function displayWeather(data) {
+function displayForecast(data) {
      //add date
-     for (i = 1; i < 6; i++) {
-      let current = document.querySelector("#day" + i + "-heading");
+    for (i = 1; i < 6; i++) {
+      var current = document.querySelector("#day" + i + "-heading");
       current.textContent = moment().add(i, 'd').format("M/D/YYYY");
-      let forecast = document.querySelector("#day" + i);
+      var forecast = document.querySelector("#day" + i);
       forecast.classList.remove("d-none");
+    }
+    //add weather data
+    for (j = 0; j < 5; j++) {
+      var currentCity = data.list[j]
+      console.log(data.list);
+      //var iconLink = "https://openweathermap.org/img/w/" + currentCity.list.weather[0].icon + ".png"
+      //var icon = document.querySelector("#day" + j + "-icon");
+      //icon.src = iconLink
+      var temp = document.querySelector("#day" + j + "-temperature")
+      temp.innerHTML = "Temperature: " + data.list.main.temp + " \u00B0F"
+      var wind = document.querySelector("#day" + j + "-wind-speed")
+      wind.innerHTML = "Wind Speed: " + currentCity.list.wind.speed + " MPH"
+      var humid = document.querySelector("#day" + j + "-humidity")
+      humid.innerHTML = "Humidity: " + currentCity.list.main.humidity + " %"
   }
 
-}
-
-// Forecast API
-//var apiForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + apiKey + '&units=imperial';
-
+};
 
 //save search history
 var saveSearch = function(cityName) {
@@ -163,12 +173,12 @@ var clearHistory = function() {
   loadSearch();
 }
 
-// //search for location that is clicked on in history
-// var reSearch = function(event) {
-//   if (event.target.innerHTML.includes("<")) {
-//       return;
-//   } 
-// }
+//search for location that is clicked on in history
+var reSearch = function(event) {
+  if (event.target.innerHTML.includes("<")) {
+      return;
+  } 
+}
 
 loadSearch();
 

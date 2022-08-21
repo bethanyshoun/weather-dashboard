@@ -1,6 +1,7 @@
-# weather-dashboard
+# Weather Dashboard
 
 ## Description
+This project utilizes html, javascript, bootstrap, moment.js, and jQuery to create a dashboard that allows users to search for weather in a city, get the current weather for that city, and see a five-day forecast for the city.
 
 ### Acceptance Criteria
 GIVEN a weather dashboard with form inputs
