@@ -7,23 +7,17 @@ var searchInputEl = document.querySelector("#city-search");
 var currentHeadingEl = document.querySelector("#current-heading");
 var currentCityEl = document.querySelector("#weather-data");
 //var currentIconEl = document.querySelector("#current-icon");
-
-var temperature = document.querySelector("#temperature");
-var humidity = document.querySelector("#humidity");
-var wind = document.querySelector("wind-speed");
-var uvindex = document.querySelector("uv-index");
+var clearButtonEl = document.querySelector("#clear-button");
 
 //Set up local storage
 var search = JSON.parse(localStorage.getItem("search") || "[]");
 var cityName = localStorage.getItem('.city-storage')
-
+// Append the search input from localStorage to the cities list
+for (var i = 0; i < localStorage.length; i++) {
+  $(".city-storage").append("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
+}
 
 var apiForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + apiKey;
-
-
-
-
-
 
 // Ensure text is captured
 function captureText(event) {
@@ -34,8 +28,9 @@ function captureText(event) {
 
 //Fetch current weather data
 function fetchWeather(cityName) {
-  if (document.getElementById("weather-data").contains(document.querySelector(".weather-container"))) {
-     //document.getElementById("weather-data").removeChild(document.querySelector(".weather-container"))
+  if (document.getElementById("weather-data").contains(document.querySelector(".weather-container"))) 
+  {
+     
   };
   console.log(cityName, "input");
   fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + apiKey + '&units=imperial').then(function (response) {
@@ -44,18 +39,6 @@ function fetchWeather(cityName) {
     console.log(data);
     displayWeather(data);
   }) 
-
-  // //Input in local storage
-  // function storeCityName(event) {
-  //   event.preventDefault();
-  //   localStorage.setItem('.city-storage', inputEl.value);
-  //   //append search input to recent searches container
-  //   for (var i = 0; i < localStorage.length; i++) {
-  //     document.querySelector('#search-container').append + ("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
-  //   }
-  //   storeCityName();
-  // }
-
 }
 
 // Function to display current weather data
@@ -63,10 +46,12 @@ function displayWeather(data) {
   // Current City Name
   var currentCity  = document.createElement ('p');
   currentCity.className = "current-city";
-  currentCity.innerHTML = data.name;
+  currentCity.textContent = data.name;
   console.log(data.name);
   var cityContainer = document.getElementById('city');
   cityContainer.appendChild(currentCity);
+  
+    saveSearch(data.name);
   //Date
   var currentDate = document.createElement ('p');
   currentDate.className = "current-date";
@@ -117,5 +102,50 @@ function displayWeather(data) {
   // uvContainer.appendChild(uvIndex);
 }
 
+//save search history
+var saveSearch = function(cityName) {
+  if (search.includes(cityName)) {
+      return;
+  } else {
+      search.push(cityName)
+      localStorage.setItem("search", JSON.stringify(search));
+      loadSearch();
+  }
+}
+
+//load search history when page loads
+var loadSearch = function() {
+  if (search.length > 0) {
+      searchContainerEl.innerHTML = "";
+      for (i = 0; i < search.length; i++) {
+          let searchBtn = document.createElement("button")
+          searchBtn.className = "search w-100 mb-3 btn btn-secondary"
+          searchBtn.innerHTML = search[i]
+          searchContainerEl.appendChild(searchBtn);
+      }
+  } else {
+      searchContainerEl.innerHTML = "";
+  }
+}
+
+var clearHistory = function() {
+  search = [];
+  localStorage.clear();
+  loadSearch();
+}
+
+// //search for location that is clicked on in history
+// var reSearch = function(event) {
+//   if (event.target.innerHTML.includes("<")) {
+//       return;
+//   } 
+// }
+
+loadSearch();
+
 // add event listeners to form and button container
 searchBtn.addEventListener("click", captureText);
+
+
+clearButtonEl.addEventListener("click", clearHistory);
+//searchContainerEl.addEventListener("click", reSearch);
