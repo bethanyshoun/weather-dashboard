@@ -1,18 +1,5 @@
-// GIVEN a weather dashboard with form inputs
-// WHEN I search for a city
-// THEN I am presented with current and future conditions for that city and that city is added to the search history
-// WHEN I view current weather conditions for that city
-// THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-// WHEN I view the UV index
-// THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-// WHEN I view future weather conditions for that city
-// THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
-// WHEN I click on a city in the search history
-// THEN I am again presented with current and future conditions for that city
-
 //Global Variables
 var apiKey = '&appid=fdd66cdc633a5422043e08fcf47a0c04';
-  //search form
 var searchBtn = document.querySelector('#search-button');
 var searchFormEl = document.querySelector("#search-form");
 var searchContainerEl = document.querySelector("#search-container");
@@ -20,7 +7,7 @@ var searchInputEl = document.querySelector("#city-search");
 var currentHeadingEl = document.querySelector("#current-heading");
 var currentCityEl = document.querySelector("#weather-data");
 //var currentIconEl = document.querySelector("#current-icon");
-  //Weather Variables
+
 var temperature = document.querySelector("#temperature");
 var humidity = document.querySelector("#humidity");
 var wind = document.querySelector("wind-speed");
@@ -28,39 +15,47 @@ var uvindex = document.querySelector("uv-index");
 
 //Set up local storage
 var search = JSON.parse(localStorage.getItem("search") || "[]");
-var cityName = localStorage.getItem('cityNameStorage')
+var cityName = localStorage.getItem('.city-storage')
 
-//Weather Icon
 
 var apiForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + apiKey;
 
-//Input in local storage
-function storeCityName() {
-  localStorage.setItem('cityNameStorage', inputEl.value);
-}
-// //append search input to recent searches container
-// for (var i = 0; i < localStorage.length; i++) {
-//   $('#search-container').append + ("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
-// }
 
+
+
+
+
+// Ensure text is captured
 function captureText(event) {
   event.preventDefault();
   var city = searchInputEl.value;
   fetchWeather(city);
 }
-//fetch current weather
-function fetchWeather(input) {
+
+//Fetch current weather data
+function fetchWeather(cityName) {
   if (document.getElementById("weather-data").contains(document.querySelector(".weather-container"))) {
      //document.getElementById("weather-data").removeChild(document.querySelector(".weather-container"))
   };
-  console.log(input, "input");
-  fetch("https://api.openweathermap.org/data/2.5/weather?q=" + input + apiKey + '&units=imperial').then(function (response) {
+  console.log(cityName, "input");
+  fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + apiKey + '&units=imperial').then(function (response) {
     return response.json();
   }) .then(function (data){
     console.log(data);
     displayWeather(data);
-  })
-  
+  }) 
+
+  // //Input in local storage
+  // function storeCityName(event) {
+  //   event.preventDefault();
+  //   localStorage.setItem('.city-storage', inputEl.value);
+  //   //append search input to recent searches container
+  //   for (var i = 0; i < localStorage.length; i++) {
+  //     document.querySelector('#search-container').append + ("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
+  //   }
+  //   storeCityName();
+  // }
+
 }
 
 // Function to display current weather data
