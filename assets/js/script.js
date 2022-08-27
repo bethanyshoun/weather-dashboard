@@ -53,8 +53,15 @@ function fetchForecast(cityName) {
   }) 
 }
 
+// Clear data from current city when new search performed
+function clearCurrentData() {
+  var test = document.getElementById('city');
+  test.removeChild(test.lastChild)
+}
+
 // Function to display current weather data
 function displayWeather(data) {
+  clearCurrentData();
   // Current City Name
   var currentCity  = document.createElement ('p');
   currentCity.className = "current-city";
@@ -71,13 +78,15 @@ function displayWeather(data) {
   var dateConatiner = document.getElementById('date');
   dateConatiner.appendChild(currentDate);
   //Icon *still needs work
-    //var currentIcon = document.createElement ('img');
-  var iconURL = "https://openweathermap.org/img/w/" + data.weather[0].icon + ".png"
   var currentIcon = document.createElement ('img');
+  var iconURL = "https://openweathermap.org/img/w/" + data.weather[0].icon + ".png"
+  //var currentIcon = document.createElement ('img');
+  console.log(iconURL);
     //var currentWeatherIcon = iconURL + currentIcon + '.png';
   currentIcon.classname = "current-icon";
   currentIcon.innerHTML = data.weather[0].icon;
-  currentIcon.innerHTML = "<img src=" + iconURL + ">";
+  //currentIcon.innerHTML = "<img src=" + iconURL + ">";
+  currentIcon.src = iconURL
   var iconContainer = document.getElementById('icon');
   iconContainer.appendChild(currentIcon);
   //Temperature
@@ -115,10 +124,10 @@ function displayWeather(data) {
 }
 
 
-//display forecast data
+//display five day forecast data
 function displayForecast(data) {
      //add date
-    for (i = 1; i < 6; i++) {
+    for (i = 0; i < 5; i++) {
       var current = document.querySelector("#day" + i + "-heading");
       current.textContent = moment().add(i, 'd').format("M/D/YYYY");
       var forecast = document.querySelector("#day" + i);
@@ -128,15 +137,16 @@ function displayForecast(data) {
     for (j = 0; j < 5; j++) {
       var currentCity = data.list[j]
       console.log(data.list);
-      //var iconLink = "https://openweathermap.org/img/w/" + currentCity.list.weather[0].icon + ".png"
-      //var icon = document.querySelector("#day" + j + "-icon");
-      //icon.src = iconLink
+      var iconLink = "https://openweathermap.org/img/w/" + currentCity.weather[0].icon + ".png"
+      var icon = document.querySelector("#day" + j + "-icon");
+      console.log(icon);
+      icon.src = iconLink
       var temp = document.querySelector("#day" + j + "-temperature")
-      temp.innerHTML = "Temperature: " + data.list.main.temp + " \u00B0F"
+      temp.innerHTML = "Temperature: " + currentCity.main.temp + " \u00B0F"
       var wind = document.querySelector("#day" + j + "-wind-speed")
-      wind.innerHTML = "Wind Speed: " + currentCity.list.wind.speed + " MPH"
+      wind.innerHTML = "Wind Speed: " + currentCity.wind.speed + " MPH"
       var humid = document.querySelector("#day" + j + "-humidity")
-      humid.innerHTML = "Humidity: " + currentCity.list.main.humidity + " %"
+      humid.innerHTML = "Humidity: " + currentCity.main.humidity + " %"
   }
 
 };
