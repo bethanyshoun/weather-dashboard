@@ -6,12 +6,12 @@ var searchContainerEl = document.querySelector("#search-container");
 var searchInputEl = document.querySelector("#city-search");
 var currentHeadingEl = document.querySelector("#current-heading");
 var currentCityEl = document.querySelector("#weather-data");
-//var currentIconEl = document.querySelector("#current-icon");
 var clearButtonEl = document.querySelector("#clear-button");
 
 //Set up local storage
 var search = JSON.parse(localStorage.getItem("search") || "[]");
 var cityName = localStorage.getItem('.city-storage')
+
 // Append the search input from localStorage to the cities list
 for (var i = 0; i < localStorage.length; i++) {
   $(".city-storage").append("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
@@ -31,11 +31,11 @@ function fetchWeather(cityName) {
   if (document.getElementById("weather-data").contains(document.querySelector(".weather-container"))) 
   {     
   };
-  console.log(cityName, "input");
+      //console.log(cityName, "input");
   fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + apiKey + '&units=imperial').then(function (response) {
     return response.json();
   }) .then(function (data){
-    console.log(data);
+        //console.log(data);
     displayWeather(data);
   }) 
 }
@@ -45,7 +45,7 @@ function fetchForecast(cityName) {
   if (document.getElementById("five").contains(document.querySelector(".forecast"))) 
   { };
   //console.log(cityName, "input");
-  console.log(cityName);
+      //console.log(cityName);
   fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + apiKey + '&units=imperial').then(function (response) {
     return response.json();
   }) .then(function (data){
@@ -55,60 +55,79 @@ function fetchForecast(cityName) {
 
 // Clear data from current city when new search performed
 function clearCurrentData() {
-  var test = document.getElementById('city');
-  test.removeChild(test.lastChild)
+   var test = document.getElementById('city');
+    test.removeChild(test.lastChild)
+  //   var currentDate = document.getElementById('current-date');
+  // currentDate.removeChild(currentDate.lastChild)
+//   var removeDate = document.getElementById('current-date');
+//   removeDate.removeChild(removeDate.lastChild)
+//   var removeIcon = document.getElementById('icon');
+//   removeIcon.removeChild(removeIcon.lastChild)
+//   var removeTemperature = document.getElementById('temperature');
+//   removeTemperature.removeChild(removeTemperature.lastChild)
+//   var removeHumidity= document.getElementById('humidity');
+//   removeHumidity.removeChild(removeHumidity.lastChild)
+//   var removeWind = document.getElementById('wind-speed');
+//   removeWind.removeChild(removeWind.lastChild)
 }
+
+// function clearCurrentDate() {
+  
+// }
+
 
 // Function to display current weather data
 function displayWeather(data) {
   clearCurrentData();
+
   // Current City Name
   var currentCity  = document.createElement ('p');
   currentCity.className = "current-city";
   currentCity.textContent = data.name;
-  console.log(data.name);
+      //console.log(data.name);
   var cityContainer = document.getElementById('city');
   cityContainer.appendChild(currentCity);
-  
     saveSearch(data.name);
+
   //Date
   var currentDate = document.createElement ('p');
   currentDate.className = "current-date";
   currentDate.innerHTML =  moment().format ("dddd, MMMM DD, YYYY");
   var dateConatiner = document.getElementById('date');
   dateConatiner.appendChild(currentDate);
-  //Icon *still needs work
+
+  //Icon 
   var currentIcon = document.createElement ('img');
   var iconURL = "https://openweathermap.org/img/w/" + data.weather[0].icon + ".png"
-  //var currentIcon = document.createElement ('img');
-  console.log(iconURL);
-    //var currentWeatherIcon = iconURL + currentIcon + '.png';
+      //console.log(iconURL);
   currentIcon.classname = "current-icon";
   currentIcon.innerHTML = data.weather[0].icon;
-  //currentIcon.innerHTML = "<img src=" + iconURL + ">";
   currentIcon.src = iconURL
   var iconContainer = document.getElementById('icon');
   iconContainer.appendChild(currentIcon);
+
   //Temperature
   var currentTemp = document.createElement ('p');
   currentTemp.className = "current-temp";
-  currentTemp.innerHTML = data.main.temp;
+  currentTemp.innerHTML = data.main.temp + " \u00B0F"
   var tempContainer = document.getElementById('temperature');
   tempContainer.appendChild(currentTemp);
+
   //Humidity
   var currentHumidity = document.createElement ('p');
   currentHumidity.className = "current-humid";
-  currentHumidity.innerHTML = data.main.humidity;
+  currentHumidity.innerHTML = data.main.humidity + " %";
   var humidityContainer = document.getElementById('humidity');
   humidityContainer.appendChild(currentHumidity);
+
   //Wind Speed
   var currentWindSpeed  = document.createElement ('p');
   currentWindSpeed.className = "current-wind";
-  currentWindSpeed.innerHTML = data.wind.speed;
+  currentWindSpeed.innerHTML = data.wind.speed + " MPH";
   var windSpeedContainer = document.getElementById('wind-speed');
   windSpeedContainer.appendChild(currentWindSpeed);
 
-  // //UV index *Still needs work
+  // //UV index *Needs subscription
   // var uvIndex = document.createElement ('p');
   // uvIndex.className = "current-uv";
   // //uvIndex.innerHTML = current.uvi;
@@ -136,10 +155,10 @@ function displayForecast(data) {
     //add weather data
     for (j = 0; j < 5; j++) {
       var currentCity = data.list[j]
-      console.log(data.list);
+          //console.log(data.list);
       var iconLink = "https://openweathermap.org/img/w/" + currentCity.weather[0].icon + ".png"
       var icon = document.querySelector("#day" + j + "-icon");
-      console.log(icon);
+          //console.log(icon);
       icon.src = iconLink
       var temp = document.querySelector("#day" + j + "-temperature")
       temp.innerHTML = "Temperature: " + currentCity.main.temp + " \u00B0F"
@@ -197,4 +216,4 @@ searchBtn.addEventListener("click", captureText);
 
 
 clearButtonEl.addEventListener("click", clearHistory);
-//searchContainerEl.addEventListener("click", reSearch);
+searchContainerEl.addEventListener("click", reSearch);
